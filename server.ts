@@ -5,7 +5,11 @@ import express from 'express';
 const app = express();
 let build = null;
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('build/client'));
+  // @ts-ignore - the file might not exist yet but it will
+  build = await import('build/server/remix.js');
+} else {
   const viteDevServer = await import('vite').then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
@@ -17,10 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
     'virtual:remix/server-build',
   );
   build = ssrModule.entry.module;
-} else {
-  app.use(express.static('build/client'));
-  // @ts-ignore - the file might not exist yet but it will
-  build = await import('build/server/remix.js');
 }
 
 app.all('*', createRequestHandler({ build }));
