@@ -7,11 +7,11 @@
   },
   "plugins": [
     "prettier",
-    "react",
-    "react-hooks"
+    "@typescript-eslint"
   ],
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "prettier"
@@ -19,18 +19,19 @@
   "overrides": [
     {
       "files": [
-        "src",
-        "server.ts"
+        "*.js",
+        "*.ts",
+        "*.jsx",
+        "*.tsx"
+      ],
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
       ],
       "rules": {
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
-        "prettier/prettier": [
-          "error",
-          {
-            "singleQuote": true
-          }
-        ]
+        "prettier/prettier": "error"
       }
     }
   ],
